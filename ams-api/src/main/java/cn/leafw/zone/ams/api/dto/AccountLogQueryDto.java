@@ -14,6 +14,8 @@ import java.util.Date;
 @Data
 public class AccountLogQueryDto extends BaseQueryDto{
 
+    private String logId;
+
     private String accountId;
 
     private String changeType;
@@ -31,4 +33,6 @@ public class AccountLogQueryDto extends BaseQueryDto{
     private Date createTime;
 
     private Date updateTime;
+
+    private String consumeType;
 }

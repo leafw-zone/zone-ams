@@ -19,6 +19,8 @@ import java.util.Date;
 public class AccountLog {
 
     @Id
+    private String logId;
+
     private String accountId;
 
     private String changeType;
@@ -36,4 +38,6 @@ public class AccountLog {
     private Date createTime;
 
     private Date updateTime;
+
+    private String consumeType;
 }

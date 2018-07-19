@@ -16,9 +16,15 @@ import java.util.Date;
 @Data
 public class AccountLogDto {
 
+    private String logId;
+
     private String accountId;
 
+    private String accountName;
+
     private String changeType;
+
+    private String changeTypeName;
 
     private BigDecimal changeAmount;
 
@@ -33,4 +39,8 @@ public class AccountLogDto {
     private Date createTime;
 
     private Date updateTime;
+
+    private String consumeType;
+
+    private String consumeTypeName;
 }

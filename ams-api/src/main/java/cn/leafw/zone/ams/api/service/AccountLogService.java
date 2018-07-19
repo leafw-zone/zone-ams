@@ -9,7 +9,7 @@ import cn.leafw.zone.common.dto.PagerResp;
  * @description
  * @date 2018/7/18 16:47
  */
-public interface AccountService {
+public interface AccountLogService {
 
     /**
      * 查询账单历史
@@ -17,4 +17,6 @@ public interface AccountService {
      * @return
      */
     PagerResp<AccountLogDto> queryAccountLogList(AccountLogQueryDto accountLogQueryDto);
+
+    void saveAccountLog(AccountLogDto accountLogDto);
 }
