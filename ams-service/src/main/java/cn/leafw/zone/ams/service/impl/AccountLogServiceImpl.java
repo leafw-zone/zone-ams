@@ -105,4 +105,8 @@ public class AccountLogServiceImpl implements AccountLogService {
         accountLog.setUpdateTime(new Date());
         accountLogRepository.save(accountLog);
     }
+
+    public void sumAccountLog(AccountLogQueryDto accountLogQueryDto){
+        List<AccountLogSumDto> accountLogSumDtoList = accountLogRepository.queryGroupByConsumeType(accountLogQueryDto.getStartDate(),accountLogQueryDto.getEndDate());
+    }
 }

@@ -35,4 +35,8 @@ public class AccountLogQueryDto extends BaseQueryDto{
     private Date updateTime;
 
     private String consumeType;
+
+    private Date startDate;
+
+    private Date endDate;
 }
