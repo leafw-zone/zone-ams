@@ -18,5 +18,7 @@ public class AccountLogSumDto {
 
     private String consumeType;
 
+    private String consumeTypeName;
+
     private String month;
 }

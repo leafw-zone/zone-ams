@@ -7,6 +7,8 @@ import cn.leafw.zone.ams.api.service.ConsumeConfigService;
 import cn.leafw.zone.ams.dao.entity.AccountLog;
 import cn.leafw.zone.ams.dao.repository.AccountLogRepository;
 import cn.leafw.zone.common.dto.PagerResp;
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +38,7 @@ import java.util.stream.Collectors;
  * @date 2018/7/18 16:47
  */
 @Service
+@Slf4j
 public class AccountLogServiceImpl implements AccountLogService {
 
     @Autowired
@@ -106,7 +112,32 @@ public class AccountLogServiceImpl implements AccountLogService {
         accountLogRepository.save(accountLog);
     }
 
-    public void sumAccountLog(AccountLogQueryDto accountLogQueryDto){
-        List<AccountLogSumDto> accountLogSumDtoList = accountLogRepository.queryGroupByConsumeType(accountLogQueryDto.getStartDate(),accountLogQueryDto.getEndDate());
+    @Override
+    public List<AccountLogSumDto> sumAccountLog(AccountLogQueryDto accountLogQueryDto){
+        String startDate = "2018-01-01";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            Date a = simpleDateFormat.parse(startDate);
+            Date endDate = new Date();
+            accountLogQueryDto.setStartDate(a);
+            accountLogQueryDto.setEndDate(endDate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        //以后自己写项目再也不用jpa了。。
+        List<Object[]> accountLogSumList = accountLogRepository.queryGroupByConsumeType(accountLogQueryDto.getStartDate(),accountLogQueryDto.getEndDate());
+        List<AccountLogSumDto> accountLogSumDtoList = new ArrayList<>();
+        for (Object[] accountLogSum : accountLogSumList) {
+            AccountLogSumDto accountLogSumDto = new AccountLogSumDto();
+            accountLogSumDto.setConsumeType(accountLogSum[1].toString());
+            List<ConsumeConfigDto> consumeConfigDtoList = consumeConfigService.queryConsumeConfigListByType(new ConsumeConfigQueryDto());
+            List<String> consumes = consumeConfigDtoList.stream().filter(e -> e.getConsumeId().equals(accountLogSum[1].toString())).map(consume -> consume.getConsumeName()).collect(Collectors.toList());
+            if(null != consumes){
+                accountLogSumDto.setConsumeTypeName(consumes.get(0));
+            }
+            accountLogSumDto.setSumAmount(new BigDecimal(accountLogSum[0].toString()));
+            accountLogSumDtoList.add(accountLogSumDto);
+        }
+        return accountLogSumDtoList;
     }
 }

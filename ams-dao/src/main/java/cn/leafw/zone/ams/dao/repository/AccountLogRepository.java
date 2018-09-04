@@ -6,6 +6,7 @@ import cn.leafw.zone.ams.dao.entity.AccountLog;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Date;
@@ -19,6 +20,6 @@ import java.util.List;
 @Repository
 public interface AccountLogRepository extends JpaRepository<AccountLog,String>,JpaSpecificationExecutor<AccountLog>{
 
-    @Query(nativeQuery = true, value = "SELECT sum(t.change_amount),t.consume_type from account_log t where t.change_time >= ?1 and t.chang_time < ?2  GROUP BY t.consume_type;")
-    List<AccountLogSumDto> queryGroupByConsumeType(Date startTime, Date endTime);
+    @Query(nativeQuery = true, value = "SELECT sum(change_amount) ,consume_type from account_log  where change_time >= :startTime and change_time < :endTime  GROUP BY consume_type;")
+    List<Object[]> queryGroupByConsumeType(@Param("startTime") Date startTime, @Param("endTime") Date endTime);
 }

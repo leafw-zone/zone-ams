@@ -2,7 +2,10 @@ package cn.leafw.zone.ams.api.service;
 
 import cn.leafw.zone.ams.api.dto.AccountLogDto;
 import cn.leafw.zone.ams.api.dto.AccountLogQueryDto;
+import cn.leafw.zone.ams.api.dto.AccountLogSumDto;
 import cn.leafw.zone.common.dto.PagerResp;
+
+import java.util.List;
 
 /**
  * @author CareyWYR
@@ -19,4 +22,6 @@ public interface AccountLogService {
     PagerResp<AccountLogDto> queryAccountLogList(AccountLogQueryDto accountLogQueryDto);
 
     void saveAccountLog(AccountLogDto accountLogDto);
+
+    List<AccountLogSumDto> sumAccountLog(AccountLogQueryDto accountLogQueryDto);
 }
